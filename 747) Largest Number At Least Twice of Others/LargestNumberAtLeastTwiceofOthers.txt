@@ -1,0 +1,23 @@
+class Solution {
+    public int dominantIndex(int[] nums) {
+        if(nums.length == 1)
+            return 0;
+        int large = Math.max(nums[0],nums[1]);
+        int large2 = Math.min(nums[0],nums[1]);
+        int pos= nums[0]>nums[1] ? 0:1;
+        for(int i=2;i<nums.length;i++){
+            if(nums[i]>large){
+                large2 = large;
+                large = nums[i];
+                pos = i;
+            }
+            else if(nums[i]>large2){
+                large2 = nums[i];
+            }
+        }
+        // System.out.println(large+" "+large2);
+        if(large >= 2*large2)
+            return pos;
+        return -1;
+    }
+}

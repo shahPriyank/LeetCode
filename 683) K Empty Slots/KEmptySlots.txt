@@ -1,0 +1,24 @@
+class Solution {
+    public int kEmptySlots(int[] flowers, int k) {
+        int[] no_of_days = new int[flowers.length];
+        for(int i=0;i<flowers.length;i++){
+            no_of_days[flowers[i]-1]=i+1;
+        }
+        int day = Integer.MAX_VALUE;
+        int left = 0;
+        int right = k+1;
+        for(int i = 0; right < no_of_days.length;i++){
+            if(no_of_days[i]<no_of_days[left] || no_of_days[i]<=no_of_days[right]){
+                if(i==right){   
+                    day = Math.min(day, Math.max(no_of_days[left],no_of_days[right]));
+                }    
+                left = i;
+                right = left+k+1;
+            }
+        }
+        if(day==Integer.MAX_VALUE){
+            return -1;
+        }
+        return day;
+    }
+}

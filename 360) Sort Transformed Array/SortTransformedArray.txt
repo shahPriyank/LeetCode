@@ -1,0 +1,21 @@
+class Solution {
+    public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        int i = 0, j = nums.length - 1;
+        int[] res = new int[nums.length];
+        int ei = nums.length - 1;
+        int si = 0;
+        while (i <= j) {
+            if (a > 0) {
+                res[ei--] = getRes(nums[i], a, b, c) > getRes(nums[j], a, b, c) ? getRes(nums[i++], a, b, c) : getRes(nums[j--], a, b, c);
+            } else {
+                res[si++] = getRes(nums[i], a, b, c) < getRes(nums[j], a, b, c) ? getRes(nums[i++], a, b, c) : getRes(nums[j--], a, b, c);
+            }
+        }
+        return res;
+    }
+		
+		
+    private static int getRes(int x, int a, int b, int c) {
+        return a * x * x + b * x + c;
+    }
+}

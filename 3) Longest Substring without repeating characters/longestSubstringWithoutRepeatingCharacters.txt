@@ -1,0 +1,40 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s.equals(""))
+            return 0;
+        int ans = Integer.MIN_VALUE;
+        Map<Character,Integer> hm = new HashMap<Character,Integer>();
+        int count = 0;
+        for(int i=0;i<s.length();i++){
+            char c = s.charAt(i);
+            while(count<s.length()){
+                if(!hm.containsKey(s.charAt(count))){
+                    hm.put(s.charAt(count),1);
+                }
+                else{
+                    break;
+                }
+                count++;
+            }
+            ans = Math.max(ans, count-i);
+            if(hm.containsKey(c)){
+                hm.put(c, hm.get(c)-1);
+                if(hm.get(c) == 0)
+                    hm.remove(c);    
+            }
+        }
+        return ans;
+    }
+}
+// class Solution {
+//     public int lengthOfLongestSubstring(String s) {
+//         int n = s.length(), ans = 0;
+//         int[] index = new int[128];
+//         for(int j=0, i=0; j<n; j++){
+//             i = Math.max(index[s.charAt(j)], i);
+//             ans = Math.max(ans, j-i+1);
+//             index[s.charAt(j)] = j+1;
+//         }
+//         return ans;
+//     }
+// }

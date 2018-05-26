@@ -1,0 +1,44 @@
+class Solution {
+    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
+        HashMap<String,HashMap<String,Double>> hm = new HashMap<String, HashMap<String,Double>>();
+        double[] finalAns = new double[queries.length];
+        String st,en;
+        for(int i=0;i<equations.length;i++){
+            st = equations[i][0];
+            en = equations[i][1];
+            if (hm.get(st) == null) {
+                hm.put(st, new HashMap<>());
+            }
+            hm.get(st).put(en, values[i]);
+            if (hm.get(en) == null) {
+                hm.put(en, new HashMap<>());
+            }
+            hm.get(en).put(st, (double) 1 / values[i]);
+        }
+        String startNode;
+        String endNode;
+        for(int i=0;i<queries.length;i++){
+            startNode = queries[i][0];
+            endNode = queries[i][1];
+            finalAns[i] = dfs(hm, startNode, endNode, new HashSet<String>(), 1.0);
+        }
+        return finalAns;
+    }
+    public double dfs(HashMap<String,HashMap<String,Double>> hm, String startNode, String endNode, HashSet<String> visited, double value){
+        if(visited.contains(startNode) || !hm.containsKey(startNode) || !hm.containsKey(endNode)){
+            return -1.0;  
+        }
+        if(startNode.equals(endNode)){
+            return value;
+        }
+        visited.add(startNode);
+        Map<String,Double> map = hm.get(startNode);
+        double ret = -1.0;
+        for(Map.Entry en : map.entrySet()){
+            ret = dfs(hm, (String)en.getKey(), endNode, visited, (Double)en.getValue()*value);
+            if(ret>0)
+                break;
+        }
+        return ret;
+    }
+}

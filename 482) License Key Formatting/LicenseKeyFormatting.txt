@@ -1,0 +1,30 @@
+class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        String temp = "";
+        StringBuilder t = new StringBuilder(temp);
+        for (int i=0;i<S.length();i++){
+            if((Character.toUpperCase(S.charAt(i))>='A' && Character.toUpperCase(S.charAt(i))<='Z') || (Character.isDigit(S.charAt(i))))
+            t.append(Character.toUpperCase(S.charAt(i)));
+        }
+        int count = 1;
+        int tempC = t.length()-1;
+        String ans = "";
+        StringBuilder a = new StringBuilder(ans);
+        for(int i = t.length()-1;i>=0;i--){            
+            if(count%(K+1)!=0){
+                a.append(t.charAt(tempC--));
+            }
+            else{
+                a.append('-');
+                i++;
+            }
+            count++;
+        }
+        
+        
+        
+        
+        // System.out.println(temp);
+        return a.reverse().toString();
+    }
+}

@@ -1,0 +1,23 @@
+class Solution {
+    public String shortestPalindrome(String s) {
+        StringBuilder s1 = new StringBuilder(s);
+        s1.reverse();
+        String s2 = s1.toString();
+        // System.out.println(s);
+        // System.out.println(s2);
+        String total = s+"#"+s2;
+        // System.out.println(total);
+        int[] kmp = new int[total.length()];
+        kmp[0] = 0;
+        int t;
+        for(int i=1;i<total.length();i++){
+            t = kmp[i-1];
+            while(t>0 && total.charAt(t) != total.charAt(i))
+                t = kmp[t-1];
+            if(total.charAt(t) == total.charAt(i))
+                ++t;
+            kmp[i] = t;
+        }
+        return s2.substring(0,s.length() - kmp[total.length()-1]) + s;
+    }
+}

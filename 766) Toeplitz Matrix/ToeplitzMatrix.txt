@@ -1,0 +1,39 @@
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int r;
+        int c;
+        int temp;
+        for(int i=n-2;i>=0;i--){
+            r=0;
+            c=i;
+            temp = matrix[r][c];
+            // System.out.println(r+" dsfamn "+c);
+            while(c != n && r != m){
+                // System.out.println(r+" "+c);
+                if(matrix[r][c] != temp)
+                    return false;
+                else{
+                    r++;
+                    c++;
+                }       
+            }
+        }
+        // System.out.println("kjfba");
+        for(int i=1;i<m;i++){
+            r=i;
+            c=0;
+            temp = matrix[r][c];
+            while(r != m && c !=n){
+                if(matrix[r][c] != temp)
+                    return false;
+                else{
+                    r++;
+                    c++;
+                } 
+            }
+        }
+        return true;
+    }
+}

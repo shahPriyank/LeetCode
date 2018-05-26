@@ -1,0 +1,25 @@
+class Solution {
+    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<int[]> ans = new ArrayList<int[]>();
+        if(nums1.length == 0 || nums2.length == 0)
+            return ans;
+        int[] temp = new int[nums1.length];
+        if(k>nums1.length*nums2.length)
+            k = nums1.length*nums2.length;
+        while(k>0){
+            int min_index = 0;
+            int min_sum = Integer.MAX_VALUE;
+            
+            for(int i=0;i<nums1.length;i++){
+                if(temp[i]<nums2.length && nums1[i] + nums2[temp[i]] < min_sum){
+                    min_index = i;
+                    min_sum = nums1[i] + nums2[temp[i]];
+                }
+            }
+            ans.add(new int[] {nums1[min_index],nums2[temp[min_index]]});
+            temp[min_index]++;
+            k--;
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,32 @@
+class Solution {
+    public List<String> findStrobogrammatic(int n) {
+        char[] chars = new char[n];
+        int left = 0, right = n - 1;
+        char[][] twos = new char[][] {{'0','0'}, {'1','1'}, {'6','9'}, {'8','8'},{'9','6'}};
+        char[] ones = new char[]{'0', '1', '8'};
+        List<String> res = new LinkedList<>();
+        dfs(left, right, chars, twos, ones, res);
+        return res;
+    }
+
+    private void dfs(int left, int right,  char[] chars, char[][] twos, char[] ones, List<String> res){
+        if(left > right){
+            String str = new String(chars);
+            res.add(str);
+            return;
+        }
+        else if(left == right){
+            for(int i = 0; i < ones.length; i++){
+                chars[left] = ones[i];
+                dfs(left + 1, right - 1, chars, twos, ones, res);
+            }
+        }
+        else {
+            for (int j = (left == 0 && right == chars.length - 1) ? 1 : 0; j < twos.length; j++) {
+                chars[left] = twos[j][0];
+                chars[right] = twos[j][1];
+                dfs(left + 1, right - 1, chars, twos, ones, res);
+            }
+        }
+    }
+}

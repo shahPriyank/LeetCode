@@ -1,0 +1,38 @@
+class Solution {
+    public int[] findRedundantDirectedConnection(int[][] edges) {
+        int[] ans = new int[2];
+        int[] rep = new int[edges.length+1];
+        int count=0;
+        for(int i=0;i<rep.length;i++)
+            rep[i] = i;
+        int ru=0;
+        for(int i=0;i<edges.length;i++){
+            ru = find(edges[i][0],rep);
+            if(rep[edges[i][1]] != edges[i][1] || ru == edges[i][1]){
+                ans = edges[i];
+                count++;
+            }
+            else{
+                rep[edges[i][1]] = edges[i][0];
+            }            
+        }
+        if(count == 1)
+            return ans;
+        
+        for(int i=0;i<rep.length;i++)
+            rep[i] = i;
+        
+        for (int i = edges.length - 1; i >= 0; i--) {            
+            if (rep[edges[i][1]] != edges[i][1] || find(edges[i][0], rep) == edges[i][1]) 
+                return edges[i];
+            rep[edges[i][1]] = edges[i][0];
+        }
+        return ans;
+    }
+    public static int find(int x,int[] rep){
+        if(x != rep[x]){
+            rep[x] = find(rep[x],rep);
+        }
+        return rep[x];
+    }
+}

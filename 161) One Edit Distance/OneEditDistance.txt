@@ -1,0 +1,69 @@
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        if(s.length() == 0 && t.length() == 0){
+            return false;
+        }
+        if(s.equals(t)){
+            return false;
+        }
+        if(s.length() == t.length()-1){
+            boolean diff = false;
+            int i=0;
+            int j=0;
+            while(j<=t.length()){
+                if(i==s.length()){
+                    return true;
+                }
+                if(s.charAt(i)==t.charAt(j)){
+                    i++;j++;
+                    continue;
+                }
+                else if(!diff){
+                    diff = true;
+                    j++;
+                }
+                else{
+                    return false;
+                }
+            }
+
+        }
+        else if(t.length() == s.length()-1){
+            boolean diff = false;
+            int i=0;
+            int j=0;
+            while(i<=s.length()){
+                if(j==t.length()){
+                    return true;
+                }
+                if(s.charAt(i)==t.charAt(j)){
+                    i++;j++;
+                    continue;
+                }
+                else if(!diff){
+                    diff = true;
+                    i++;
+                }
+                else
+                    return false;
+            }
+        }
+        else if(t.length() == s.length()){
+            boolean diff = false;
+            int i;
+            for(i=0;i<s.length();i++){
+                if(s.charAt(i)==t.charAt(i))
+                    continue;
+                else if(!diff){
+                    diff = true;
+                }
+                else
+                    return false;
+            }
+            if(i==t.length()){
+                return true;
+            }
+        }
+        return false;
+    }
+}

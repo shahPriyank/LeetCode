@@ -1,0 +1,56 @@
+class Solution {
+    public int trap(int[] height) {
+        List<Integer> peaks = new ArrayList<Integer>();
+        if(height.length <= 2){
+            return 0;
+        }
+        if(height[0]>height[1])
+            peaks.add(0);
+        for(int i=1;i<height.length-1;i++){
+            if(height[i]>=height[i-1] && height[i]>=height[i+1])
+                peaks.add(i);
+        }
+        if(height[height.length-1]>height[height.length-2]){
+            peaks.add(height.length-1);
+        }
+        int left = 0;
+        int right = 0;
+        int sum = 0;
+        int i = 0;
+        while(i<peaks.size()-1){
+            int k = i+1;
+            left = peaks.get(i);
+            right= peaks.get(k);
+            System.out.println(left+" "+right+" "+k);
+            if(height[left]>height[right]){
+                int z;
+                boolean flag = false;
+                for(z=k;z<peaks.size();z++){
+                    flag = true;
+                    if(height[right]<=height[peaks.get(z)] && height[left]<=height[peaks.get(z)]){
+                        right = peaks.get(z);
+                        break;
+                    }
+                }
+                if(z == peaks.size() && (flag)){
+                    int maxi = Integer.MIN_VALUE;
+                    int pos = Integer.MIN_VALUE;
+                    for(int y=k;y<peaks.size();y++){
+                        if(height[peaks.get(y)]>maxi){
+                            maxi = height[peaks.get(y)];
+                            pos = y;
+                        }
+                    }
+                    right = peaks.get(pos);
+                }
+            }
+            int mini = Math.min(height[left],height[right]);
+            for(int j=left+1;j<right;j++){
+                if(mini>height[j])
+                    sum += mini - height[j];
+            }
+            i=peaks.indexOf(right);
+        }
+        return sum;
+    }
+}

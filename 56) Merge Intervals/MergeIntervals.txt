@@ -1,0 +1,30 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    private class IComparator implements Comparator<Interval>{
+        @Override
+        public int compare(Interval i1, Interval i2){
+            return i1.start<i2.start ? -1 : i1.start == i2.start ? 0 : 1;
+        }
+    }
+    public List<Interval> merge(List<Interval> intervals) {
+        Collections.sort(intervals, new IComparator());
+        LinkedList<Interval> merged = new LinkedList<Interval>();
+        for(Interval i : intervals){
+            if(merged.isEmpty() || merged.getLast().end < i.start){
+                merged.add(i);
+            }
+            else{
+                merged.getLast().end = Math.max(merged.getLast().end, i.end);
+            }
+        }
+        return merged;
+    }
+}

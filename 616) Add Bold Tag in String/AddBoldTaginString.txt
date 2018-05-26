@@ -1,0 +1,50 @@
+class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        boolean bold[] = new boolean[s.length()];
+        int count = 0;
+        int z=0;
+        for(int p=0;p<s.length();p++){
+            for(String w: dict){
+                if(s.startsWith(w,p)){
+                count = w.length();
+                z=p;
+                while(count>0){
+                    bold[z] = true;
+                    z++;count--;
+                }
+                }
+            }
+        }
+        // System.out.println(Arrays.toString(bold));
+
+        // StringBuilder sb = new StringBuilder();
+        // int ptr = 0;
+        // while(ptr<s.length()){
+        //     if(!bold[ptr]){
+        //         sb.append(s.charAt(ptr));
+        //         continue;
+        //     }
+        //     int ptr2 = ptr;
+        //     while(bold[ptr2] && ptr2<s.length()){
+        //         ptr2++;
+        //     }
+        //     sb.append("<b>" + s.substring(ptr, ptr2) + "</b>");
+        //     ptr = ptr2-1;
+        //     ptr++;
+        // }
+        // return sb.toString();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (!bold[i]) {
+                result.append(s.charAt(i));
+                continue;
+            }
+            int j = i;
+            while (j < s.length() && bold[j]) j++;
+            result.append("<b>" + s.substring(i, j) + "</b>");
+            i = j - 1;
+        }
+        
+        return result.toString();
+    }
+}

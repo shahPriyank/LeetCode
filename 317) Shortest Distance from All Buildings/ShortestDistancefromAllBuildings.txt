@@ -1,0 +1,52 @@
+class Solution {
+    public int shortestDistance(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int no_of_buildings = 0;
+        int[][] dist = new int[m][n];
+        int[][] no_of_buildings_reached = new int[m][n];
+        int[] dx = {-1,0,1,0};
+        int[] dy = {0,1,0,-1};
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j] == 1){
+                    no_of_buildings++;
+                    boolean[][] visited = new boolean[m][n];
+                    Queue<int[]> q = new LinkedList<int[]>();
+                    q.add(new int[] {i,j});
+                    int level = 1;
+                    while(!q.isEmpty()){
+                        int qsize = q.size();
+                        for(int p=0;p<qsize;p++){
+                            int[] temp = q.poll();
+                            int st = temp[0];
+                            int en = temp[1];
+                            for(int k=0;k<dx.length;k++){
+                                if(isValid(st+dx[k],en+dy[k],m,n) && !visited[st+dx[k]][en+dy[k]] && grid[st+dx[k]][en+dy[k]]==0){
+                                    visited[st+dx[k]][en+dy[k]] = true;
+                                    no_of_buildings_reached[st+dx[k]][en+dy[k]]++;
+                                    dist[st+dx[k]][en+dy[k]] += level;
+                                    q.add(new int[] {st+dx[k],en+dy[k]});
+                                }
+                            }
+                        }
+                        level++;
+                    }
+                }
+            }
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j] == 0 && no_of_buildings_reached[i][j] == no_of_buildings)
+                    ans = Math.min(ans,dist[i][j]);
+            }
+        }
+        return ans == Integer.MAX_VALUE? -1:ans;
+    }
+    public static boolean isValid(int x,int y,int m,int n){
+        if(x>=0 && x<m && y>=0 && y<n)
+            return true;
+        return false;
+    }
+}

@@ -1,0 +1,28 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> ans = new ArrayList<List<String>>();
+        Map<String,List<String>> map = new HashMap<String,List<String>>();
+        for(String s:strs){
+            char[] c = s.toCharArray();
+            List<String> tempList = new ArrayList<>();
+            Arrays.sort(c);
+            if(!map.containsKey(String.valueOf(c))){
+                tempList.add(s);
+                map.put(String.valueOf(c), tempList);
+            }
+            else{
+                tempList = map.get(String.valueOf(c));
+                tempList.add(s);
+                map.put(String.valueOf(c), tempList);
+            }
+        }
+        // System.out.println(map.get(0));
+        
+        for(Map.Entry<String,List<String>> entry : map.entrySet()){
+            ans.add(entry.getValue());
+        }
+        
+        
+        return ans;
+    }
+}

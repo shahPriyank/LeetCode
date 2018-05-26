@@ -1,0 +1,100 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        Stack<Interval> st = new Stack<Interval>();
+        List<Interval> ans = new ArrayList<Interval>();
+        boolean flag = false;
+        if(intervals.size() == 0){
+            st.push(newInterval);
+            flag = true;
+        }
+        for(int i=intervals.size()-1;i>=0;i--){
+            Interval it = intervals.get(i);
+            if(!flag){
+                if(it.start>newInterval.end)
+                    st.push(it);
+                else if(newInterval.start>it.end){
+                    st.push(newInterval);
+                    st.push(it);
+                    flag = true;
+                }
+                else if(newInterval.start == it.end){
+                    Interval temp = new Interval();
+                    temp.start = it.start;
+                    temp.end = newInterval.end;
+                    st.push(temp);
+                    flag = true;
+                }
+                else if(newInterval.end == it.start){
+                    Interval temp = new Interval();
+                    temp.start = newInterval.start;
+                    temp.end = it.end;
+                    st.push(temp);
+                    flag = true;
+                }
+                else if((newInterval.end<it.end && newInterval.end>=it.start) || (newInterval.start>=it.start && newInterval.start<it.end)){
+                        Interval temp = new Interval();
+                        temp.start = Math.min(newInterval.start,it.start);
+                        temp.end = Math.max(newInterval.end,it.end);
+                        // st.pop();
+                        st.push(temp);
+                        flag = true;
+                }
+            }
+            else{
+                Interval temp = new Interval();
+                if(st.peek().start<it.end && st.peek().start>it.start){
+                    // System.out.println(it.start+" "+it.end);
+                    temp.start = it.start;
+                    temp.end = Math.max(it.end,st.peek().end);
+                    // System.out.println(temp.start+" "+temp.end);
+                    st.pop();
+                    st.push(temp);
+                }
+                else if(it.end<st.peek().start){
+                    // System.out.println(it.start+" "+it.end);
+                    st.push(it);
+                }
+                else if(it.end == st.peek().start){
+                    temp.start = it.start;
+                    temp.end = st.peek().end;
+                    st.pop();
+                    st.push(temp);
+                }
+            }
+        }
+        if(!flag){
+            st.push(newInterval);
+        }
+        while(!st.isEmpty()){
+            ans.add(st.pop());
+        }
+        return ans;
+    }
+}
+// public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+//     List<Interval> result = new ArrayList<Interval>();
+//     for (Interval i : intervals) {
+//         if (newInterval == null || i.end < newInterval.start)
+//             result.add(i);
+//         else if (i.start > newInterval.end) {
+//             result.add(newInterval);
+//             result.add(i);
+//             newInterval = null;
+//         } else {
+//             newInterval.start = Math.min(newInterval.start, i.start);
+//             newInterval.end = Math.max(newInterval.end, i.end);
+//         }
+//     }
+//     if (newInterval != null)
+//         result.add(newInterval);
+//     return result;
+// }
